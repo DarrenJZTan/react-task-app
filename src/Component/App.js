@@ -12,7 +12,7 @@ function App() {
   return (
     <Container fluid>
       <Row>
-        <Container as={Col} fluid className='bg-info vh-100 d-flex align-items-center justify-content-center' xs={4}>
+        <Container as={Col} fluid className=' vh-100 d-flex align-items-center justify-content-center' xs={4}>
           <FormPage />
         </Container>
         <Container as={Col} fluid className='bg-success'>
