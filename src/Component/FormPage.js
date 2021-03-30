@@ -6,7 +6,6 @@ import Row from "react-bootstrap/Row";
 import "../index.css";
 
 const FormPage = () => {
-  const [validated, setValidated] = useState(false);
 
   const [object, setObject] = useState({
     taskName: '',
@@ -18,38 +17,72 @@ const FormPage = () => {
 
   
   const minDate = new Date().toLocaleDateString('en-CA')
-  
 
  
   const handleChange = (event) => {
 
     const value = event.target.value
     const key = event.target.id
-    console.log(event)
     setObject((prevObject) => ({
       ...prevObject,
       [key]: value
     }));
+    if ( !!errors[key] ) setErrors({
+      ...errors,
+      [key]: null
+    })
   };
 
   const handleSubmit = (event) => {
-    const form = event.currentTarget;
     event.preventDefault();
-    setValidated(true);
+    const newErrors = findFormErrors()
+    if ( Object.keys(newErrors).length > 0 ) {
+      setErrors(newErrors)
+    } else {
+      // No errors! Put any logic here for the form submission!
+      alert('working')
+    }
   };
 
   const handleReset = (event) => {
-    setValidated(false)
+    setErrors({})
+    setObject({
+      taskName: '',
+      assignedTo: '',
+      status: 'Choose...',
+      date: '',
+      description: '',
+    })
   }
 
+  const [ errors, setErrors ] = useState({})
+  const findFormErrors = () => {
+    const { taskName, assignedTo, status, date, description } = object
+    const newErrors = {}
+    
+    if ( !taskName || taskName.length > 30 || taskName.length < 1 ) newErrors.taskName = 'Task name must be between 2 and 30 characters long.'
+    
+    if ( !assignedTo || assignedTo === '' ) newErrors.assignedTo = 'Please assign task to an individual'
+    else if ( assignedTo.length > 30 ) newErrors.assignedTo = 'Name is too long!'
+
+    if ( !status || status === 'Choose...' ) newErrors.status = 'Please select a status'
+    
+    if ( !date || date === '' ) newErrors.date = 'Please select a due date'
+    
+    if ( description.length > 100 ) newErrors.description = 'Description is too long!'
+    
+
+    return newErrors
+  }
+
+
   return (
-    <Form validated={validated} onSubmit={handleSubmit} noValidate>
+    <Form onSubmit={handleSubmit} noValidate>
       <Form.Row>
         <Form.Group as={Col} controlId="taskName">
           <Form.Label>Task Name</Form.Label>
-          <Form.Control type="text" placeholder="Enter Task" isInvalid={object.taskName > 3 ? false : true} isValid={object.taskName > 3 ? false : true} onChange={handleChange}/>
-          <Form.Control.Feedback type="valid">Looks Good</Form.Control.Feedback>
-          <Form.Control.Feedback type="invalid">Looks Bad</Form.Control.Feedback>
+          <Form.Control type="text" placeholder="Enter Task" isInvalid={!!errors.taskName} onChange={handleChange}/>
+          <Form.Control.Feedback type="invalid">{ errors.taskName }</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group as={Col} controlId="assignedTo">
@@ -58,33 +91,38 @@ const FormPage = () => {
             style={{ fontSize: "24px" }}
             type="text"
             placeholder="Enter Name"
+            isInvalid={!!errors.assignedTo}
             onChange={handleChange}
           />
+          <Form.Control.Feedback type="invalid">{ errors.assignedTo }</Form.Control.Feedback>
         </Form.Group>
       </Form.Row>
 
       <Form.Row>
         <Form.Group as={Col} controlId="status">
           <Form.Label>Status</Form.Label>
-          <Form.Control as="select" defaultValue="Choose..." onChange={handleChange}>
+          <Form.Control as="select" defaultValue="Choose..." isInvalid={!!errors.status} onChange={handleChange}>
             <option>Choose...</option>
             <option>Pending</option>
             <option>In progress</option>
             <option>Complete</option>
           </Form.Control>
+          <Form.Control.Feedback type="invalid">{ errors.status }</Form.Control.Feedback>
         </Form.Group>
       </Form.Row>
 
       <Form.Row>
         <Form.Group as={Col} controlId="date">
           <Form.Label>Due Date</Form.Label>
-          <Form.Control type="date" placeholder="Enter Date" onChange={handleChange} min={minDate} />
+          <Form.Control type="date" placeholder="Enter Date" isInvalid={!!errors.date} onChange={handleChange} min={minDate} />
+          <Form.Control.Feedback type="invalid">{ errors.date }</Form.Control.Feedback>
         </Form.Group>
       </Form.Row>
 
       <Form.Group controlId="description">
         <Form.Label>Description</Form.Label>
-        <Form.Control as="textarea" rows={3} onChange={handleChange}/>
+        <Form.Control as="textarea" rows={3} isInvalid={!!errors.description} onChange={handleChange}/>
+        <Form.Control.Feedback type="invalid">{ errors.description }</Form.Control.Feedback>
       </Form.Group>
 
       <Row className="justify-content-center">

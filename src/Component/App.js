@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/Container'
 function App() {
 
   const [tasks, setTasks] = useState([])
+
   return (
     <Container fluid>
       <Row>
@@ -16,7 +17,7 @@ function App() {
           <FormPage />
         </Container>
         <Container as={Col} fluid className='bg-success'>
-          
+          <TaskList tasks={tasks} />
         </Container>
       </Row>
     </Container>
