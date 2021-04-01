@@ -1,14 +1,14 @@
 import Task from './Task'
-import CardColumns from 'react-bootstrap/CardColumns'
+
 
 const TaskList = ({ tasks }) => {
   
   return (
-    <CardColumns className='pt-5'>
+    <div className='mt-5 d-flex flex-wrap justify-content-center '>
       {tasks.map((task) => (
         <Task key={task.id} task={task} />
       ))}
-    </CardColumns>
+    </div>
   )
 }
 

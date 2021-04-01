@@ -5,5 +5,10 @@ label {
 
 .form-control {
   font-size: 24px;
+  
 }
 
+form {
+  width: 80%;
+  
+}
