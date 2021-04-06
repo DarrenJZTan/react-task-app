@@ -10,5 +10,18 @@ label {
 
 form {
   width: 80%;
+}
+
+.app {
+  background-image: url("https://images.pexels.com/photos/129731/pexels-photo-129731.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+}
+
+.scroll {
+  background-image: url("https://www.transparentpng.com/thumb/scroll/vintage-scroll-png-transparent-images-12.png");
+  background-size: contain;
+  background-color: transparent;
+  border: none;
+  height: 500px;
+  width: 400px; 
   
 }

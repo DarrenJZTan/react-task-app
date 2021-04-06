@@ -4,11 +4,15 @@ import TaskList from './TaskList';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal"
 
 
 
-function App() {
-  
+export default function App() {
+
+
+  const [show, setShow] = useState(false);
   const [tasks, setTasks] = useState([])
 
   useEffect(() => {
@@ -34,23 +38,38 @@ function App() {
 
   //Save Task
   useEffect(() => {save(tasks)}, [tasks])
+
+
   const save = (tasks) => {
     localStorage.setItem("tasks", JSON.stringify(tasks))
   }
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true); 
+
   return (
-    <Container fluid>
-      <Row>
-        <Container as={Col} fluid className=' vh-100 d-flex align-items-center justify-content-center' xs={4}>
-          <FormPage onAdd={addTask} />
-        </Container>
-        <Container as={Col} fluid className='bg-success'>
-          <div style={{height: "500px", backgroundColor: "blue"}}></div>
-          {tasks.length > 0 ? <TaskList tasks={tasks} onDelete={deleteTask} /> : 'No Tasks To Show'}
-        </Container>
-      </Row>
-    </Container>
+    <Container fluid className="app">
+      <Container fluid className='vh-100 d-flex align-items-center justify-content-center'>
+        <Button variant="primary" onClick={handleShow}>
+          Launch demo modal
+        </Button>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add a Task</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <FormPage onAdd={addTask} setShow={setShow} />
+          </Modal.Body>
+        </Modal>  
+        {tasks.length > 0 ? <TaskList tasks={tasks} onDelete={deleteTask} /> : 'No Tasks To Show'}
+      </Container>
+    </Container >
+        
   );
 }
 
-export default App;
+
+
+
+
+ 

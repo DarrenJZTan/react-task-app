@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import "../index.css";
 import { v4 as uuidv4 } from 'uuid';
 
-const FormPage = ({ onAdd }) => {
+const FormPage = ({ onAdd, setShow }) => {
 
   const [object, setObject] = useState({
     taskName: '',
@@ -51,6 +51,7 @@ const FormPage = ({ onAdd }) => {
         description: '',
         id: uuidv4()
       })
+      setShow(false)
     }
   };
 
