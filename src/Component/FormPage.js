@@ -44,14 +44,13 @@ const FormPage = ({ onAdd }) => {
      
       onAdd(object)
 
-      // setObject({
-      //   taskName: '',
-      //   assignedTo: '',
-      //   date: '',
-      //   description: '',
-      //   id: uuidv4()
-
-      // })
+      setObject({
+        taskName: '',
+        assignedTo: '',
+        date: '',
+        description: '',
+        id: uuidv4()
+      })
     }
   };
 

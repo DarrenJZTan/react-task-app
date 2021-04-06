@@ -1,14 +1,16 @@
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
+import { FaTimes } from 'react-icons/fa'
 
-const Task = ({ task }) => {
+const Task = ({ task, onDelete }) => {
+
   return (
     <>
       <Card key={task.index} className="m-2" style={{maxWidth: "350px", minWidth: "350px"}}>
         <Card.Body className="d-flex flex-column">
           <div>
             <Card.Title className="float-left">{task.taskName}</Card.Title>
-            <p className="float-right text-danger font-weight-bold">X</p>
+            <FaTimes style={{ cursor: 'pointer', fontSize: '1.25em', opacity: '0.75' }} className="float-right" onClick={() => onDelete(task.id)} />
           </div>
           <Card.Subtitle className="mb-2 text-muted">{task.date}</Card.Subtitle>
           <Card.Text>

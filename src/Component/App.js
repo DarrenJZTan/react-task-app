@@ -27,9 +27,13 @@ function App() {
     })
   }
 
+  //Remove Task
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id))
+  }
+
+  //Save Task
   useEffect(() => {save(tasks)}, [tasks])
-
-
   const save = (tasks) => {
     localStorage.setItem("tasks", JSON.stringify(tasks))
   }
@@ -42,7 +46,7 @@ function App() {
         </Container>
         <Container as={Col} fluid className='bg-success'>
           <div style={{height: "500px", backgroundColor: "blue"}}></div>
-          <TaskList tasks={tasks} className='' />
+          {tasks.length > 0 ? <TaskList tasks={tasks} onDelete={deleteTask} /> : 'No Tasks To Show'}
         </Container>
       </Row>
     </Container>
