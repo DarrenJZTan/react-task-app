@@ -2,8 +2,17 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import { FaTimes } from 'react-icons/fa'
 
-const Task = ({ task, onDelete }) => {
-
+const Task = ({ task, onDelete, onStatusClick }) => {
+  
+  let timeRemaining;
+ 
+  const timeNow = Date.now()
+  const dueDate = new Date(task.date)
+  timeRemaining = Math.ceil((dueDate - timeNow) / 86400000)
+ 
+  
+  
+   
   return (
     <>
       <Card key={task.index} className="m-2 scroll">
@@ -12,14 +21,13 @@ const Task = ({ task, onDelete }) => {
             <Card.Title className="float-left">{task.taskName}</Card.Title>
             <FaTimes style={{ cursor: 'pointer', fontSize: '1.25em', opacity: '0.75' }} className="float-right" onClick={() => onDelete(task.id)} />
           </div>
-          <Card.Subtitle className="mb-2 text-muted">{task.date}</Card.Subtitle>
+          <Card.Subtitle className="mb-2 font-weight-bold text-danger">{`${timeRemaining} days remaining`}</Card.Subtitle>
           <Card.Text>
             {task.description}
           </Card.Text>
+          <Card.Text className="mx-2">{`- ${task.assignedTo}`}</Card.Text>
           <div className="mt-auto">
-            <Button className="mr-2">Edit</Button>
-            <Button>Complete</Button>
-            <Card.Text className="float-right mt-2">{task.assignedTo}</Card.Text>
+            <Button onClick={() => onStatusClick(task.id)}>{task.missionStatus}</Button>
           </div>
           
 

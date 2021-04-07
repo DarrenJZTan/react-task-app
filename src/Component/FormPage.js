@@ -14,6 +14,7 @@ const FormPage = ({ onAdd, setShow }) => {
     date: '',
     description: '',
     id: uuidv4(),
+    missionStatus: 'Accept',
       });
   const [ errors, setErrors ] = useState({})
   
