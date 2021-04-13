@@ -10,7 +10,14 @@ const Task = ({ task, onDelete, onStatusClick }) => {
   const dueDate = new Date(task.date)
   timeRemaining = Math.ceil((dueDate - timeNow) / 86400000)
  
-  
+
+  let variant = "primary";
+  if(task.missionStatus === "Complete") {
+    variant = "success"
+  } else if(task.missionStatus === "Incomplete") {
+    variant = "danger"
+  }
+
   
    
   return (
@@ -27,7 +34,7 @@ const Task = ({ task, onDelete, onStatusClick }) => {
           </Card.Text>
           <Card.Text className="mx-2">{`- ${task.assignedTo}`}</Card.Text>
           <div className="mt-auto">
-            <Button onClick={() => onStatusClick(task.id)}>{task.missionStatus}</Button>
+            <Button variant={variant} onClick={() => onStatusClick(task.id)}>{task.missionStatus}</Button>
           </div>
           
 

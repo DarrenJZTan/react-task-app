@@ -8,6 +8,9 @@ import Modal from "react-bootstrap/Modal";
 export default function App() {
   const [show, setShow] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tasksPerPage, setTasksPerPage] = useState(3);
+  const [currentTasks, setCurrentTasks] = useState([])
 
   const handleStatusClick = (id) => {
     setTasks(
@@ -28,13 +31,15 @@ export default function App() {
     );
   };
 
-  useEffect(() => {
-    setTasks(() => {
+  useEffect(async () => {
+    await setTasks(() => {
       if (localStorage.tasks === undefined) {
         return [];
       }
       return JSON.parse(localStorage.getItem("tasks"));
     });
+    setCurrentPage(1)
+    
   }, []);
 
   //Add Task
@@ -61,14 +66,35 @@ export default function App() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  // Get current tasks
+    
+  let indexOfLastTask = currentPage * tasksPerPage;
+  let indexOfFirstTask = indexOfLastTask - tasksPerPage;
+
+  useEffect(() => {
+    indexOfLastTask = currentPage * tasksPerPage;
+    indexOfFirstTask = indexOfLastTask - tasksPerPage;
+    setCurrentTasks(() => tasks.slice(indexOfFirstTask, indexOfLastTask));
+    
+    if(currentPage > Math.ceil(tasks.length / tasksPerPage)){
+      previousPage()
+      
+    } 
+  }, [tasks, currentPage])
+  // const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
+  
+  
+  const nextPage = () => setCurrentPage((prev) => prev +1)
+  const previousPage = () => setCurrentPage((prev) => prev -1)
+  
   return (
-    <Container fluid className="app">
+    <Container fluid className="app no-gutters">
       <Container
         fluid
-        className="vh-100 d-flex align-items-center justify-content-center"
+        className="vh-100 d-flex align-items-center justify-content-center app-border"
       >
-        <Button variant="primary" onClick={handleShow}>
-          Launch demo modal
+        <Button variant="outline-light" style={{ position: "absolute", bottom: "50px", fontSize: "28px", left: "60px"}} onClick={handleShow}>
+          Add
         </Button>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
@@ -82,12 +108,31 @@ export default function App() {
         </Modal>
         {tasks.length > 0 ? (
           <TaskList
-            tasks={tasks}
+            tasks={currentTasks}
             onDelete={deleteTask}
             onStatusClick={handleStatusClick}
           />
         ) : (
           "No Tasks To Show"
+        )}
+        {1 >= Math.ceil(tasks.length / tasksPerPage) ? (
+          null
+        ) : (
+          <p style={{ color: "white", position: "absolute", bottom: "50px", fontSize: "28px" }}>
+          Page {currentPage} / {Math.ceil(tasks.length / tasksPerPage)}
+          </p>
+        )}
+
+        {currentPage > 1 ? (
+          <Button variant="outline-light" onClick={previousPage} style={{ border: "none", position: "absolute", bottom: "50px", right: "175px", fontSize: "28px" }}>Back</Button>
+        ) : (
+          null
+        )}
+
+        {currentPage < tasks.length / tasksPerPage ? (
+          <Button variant="outline-light" onClick={nextPage} style={{ border: "none", position: "absolute", bottom: "50px", right: "60px", fontSize: "28px" }}>Next</Button>
+        ) : (
+          null
         )}
       </Container>
     </Container>

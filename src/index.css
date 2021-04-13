@@ -15,6 +15,13 @@ form {
 .app {
   background-image: url('wood-pattern-1920x1080.png');
   background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.app-border {
+  border: 42px ridge #5C4033;
 }
 
 .scroll {
@@ -25,4 +32,11 @@ form {
   height: 500px;
   width: 400px; 
   
+}
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+  padding-right: 0;
+  padding-left: 0;
 }
