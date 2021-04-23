@@ -4,12 +4,13 @@ import TaskList from "./TaskList";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Row from 'react-bootstrap/Row'
 
 export default function App() {
   const [show, setShow] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [tasksPerPage, setTasksPerPage] = useState(3);
+  const [tasksPerPage] = useState(3);
   const [currentTasks, setCurrentTasks] = useState([])
 
   const handleStatusClick = (id) => {
@@ -39,7 +40,6 @@ export default function App() {
       return JSON.parse(localStorage.getItem("tasks"));
     });
     setCurrentPage(1)
-    
   }, []);
 
   //Add Task
@@ -72,13 +72,14 @@ export default function App() {
   let indexOfFirstTask = indexOfLastTask - tasksPerPage;
 
   useEffect(() => {
+    // eslint-disable-next-line
     indexOfLastTask = currentPage * tasksPerPage;
+    // eslint-disable-next-line
     indexOfFirstTask = indexOfLastTask - tasksPerPage;
     setCurrentTasks(() => tasks.slice(indexOfFirstTask, indexOfLastTask));
-    
-    if(currentPage > Math.ceil(tasks.length / tasksPerPage)){
+    console.log(currentPage)
+    if(currentPage > Math.ceil(tasks.length / tasksPerPage) && tasks.length > 0){
       previousPage()
-      
     } 
   }, [tasks, currentPage])
   // const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
@@ -93,9 +94,7 @@ export default function App() {
         fluid
         className="vh-100 d-flex align-items-center justify-content-center app-border"
       >
-        <Button variant="outline-light" style={{ position: "absolute", bottom: "50px", fontSize: "28px", left: "60px"}} onClick={handleShow}>
-          Add
-        </Button>
+        <h1 style={{ position: "absolute", top: "50px", color: "white", opacity: "40%" }} className="display-1">- Quest Board -</h1>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Add a Task</Modal.Title>
@@ -107,13 +106,31 @@ export default function App() {
           </Modal.Body>
         </Modal>
         {tasks.length > 0 ? (
-          <TaskList
-            tasks={currentTasks}
-            onDelete={deleteTask}
-            onStatusClick={handleStatusClick}
-          />
+          <>
+            <TaskList
+              tasks={currentTasks}
+              onDelete={deleteTask}
+              onStatusClick={handleStatusClick}
+            />
+            <Button variant="outline-light" style={{ position: "absolute", bottom: "50px", fontSize: "28px", left: "60px"}} onClick={handleShow}>
+            Add
+            </Button> 
+          </>
         ) : (
-          "No Tasks To Show"
+          <Container>
+            <Row className="justify-content-center" style={{color: "white", fontSize: "32px", fontWeight: "Bold"}}>
+              No Quests Available
+            </Row>
+            <Row className="justify-content-center" style={{color: "white", fontSize: "32px", fontWeight: "Bold"}}>
+              Click on the Button to create your First Quest 
+            </Row>
+            <Row className="justify-content-center mt-4">
+              <Button variant="primary" style={{ fontSize: "24px", fontWeight: "Bold", display: "block",
+              width: "50%" }} onClick={handleShow}>
+                Create
+              </Button>
+            </Row>
+          </Container>
         )}
         {1 >= Math.ceil(tasks.length / tasksPerPage) ? (
           null

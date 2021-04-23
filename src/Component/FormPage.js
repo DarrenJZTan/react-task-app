@@ -67,7 +67,7 @@ const FormPage = ({ onAdd, setShow }) => {
   }
 
   const validateFormErrors = () => {
-    const { taskName, assignedTo, status, date, description } = object
+    const { taskName, assignedTo, date, description } = object
     const newErrors = {}
     
     if ( !taskName || taskName.length > 30 || taskName.length < 1 ) newErrors.taskName = 'Task name must be between 2 and 30 characters long.'
@@ -77,7 +77,8 @@ const FormPage = ({ onAdd, setShow }) => {
     
     if ( !date || date === '' ) newErrors.date = 'Please select a due date'
     
-    if ( description.length > 100 ) newErrors.description = 'Description is too long!'
+    if ( !description || description.length < 10 )  newErrors.description = 'Please assign a Description between 10 and 100 characters'
+    else if ( description.length > 100 ) newErrors.description = 'Description is too long!'
     
 
     return newErrors
