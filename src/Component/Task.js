@@ -12,9 +12,9 @@ const Task = ({ task, onDelete, onStatusClick }) => {
   if (timeRemaining === '1 days remaining') {
     timeRemaining = '1 day remaining!'
   }
-  if(timeRemaining === '0 days remaining' && task.missionStatus === 'Accept') {
+  if(timeRemaining === '0 days remaining' && task.missionStatus === 'Accept' || Math.ceil((dueDate - timeNow) / 86400000)+1 < 0 && task.missionStatus === 'Accept') {
     timeRemaining = 'This quest is no longer available'
-  } else if(timeRemaining === '0 days remaining' && task.missionStatus === 'Incomplete') {
+  } else if(timeRemaining === '0 days remaining' && task.missionStatus === 'Incomplete' || Math.ceil((dueDate - timeNow) / 86400000)+1 < 0 && task.missionStatus === 'Incomplete') {
     timeRemaining = 'You have failed this quest'
   } else if (task.missionStatus === 'Complete') {
     timeRemaining = 'You have completed this quest'
